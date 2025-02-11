@@ -1,0 +1,15 @@
+version: "1.2"
+name: fixturenet-eth
+description: "Ethereum Fixturenet"
+repos:
+  - github.com/bozemanpass/lighthouse
+containers:
+  - bpi/lighthouse
+  - bpi/lighthouse-cli
+  - bpi/fixturenet-eth-genesis-postmerge
+  - bpi/fixturenet-eth-geth
+  - bpi/fixturenet-eth-lighthouse
+pods:
+  - name: fixturenet-eth
+    repository: bozemanpass/fixturenet-eth-stack
+    path: fixturenet-eth
