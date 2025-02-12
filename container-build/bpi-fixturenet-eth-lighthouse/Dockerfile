@@ -1,4 +1,4 @@
-FROM bpi/lighthouse-cli:local AS lcli
+FROM sigp/lcli:v5.1.2 AS lcli
 FROM bpi/fixturenet-eth-genesis-postmerge:local AS fnetgen
 
 FROM bpi/lighthouse:local

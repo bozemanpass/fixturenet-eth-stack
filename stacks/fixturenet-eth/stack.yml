@@ -2,11 +2,9 @@ version: "1.2"
 name: fixturenet-eth
 description: "Ethereum Fixturenet"
 repos:
-  - github.com/bozemanpass/lighthouse
   - github.com/bozemanpass/fixturenet-eth-stack
 containers:
   - bpi/lighthouse
-  - bpi/lighthouse-cli
   - bpi/fixturenet-eth-genesis-postmerge
   - bpi/fixturenet-eth-geth
   - bpi/fixturenet-eth-lighthouse
