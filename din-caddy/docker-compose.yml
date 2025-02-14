@@ -1,0 +1,14 @@
+
+services:
+  din-caddy:
+    image: bpi/din-caddy:local
+    restart: always
+    volumes:
+      - din-caddy-data:/srv
+      - din-caddy-config:/etc/caddy:ro
+    ports:
+      - 8000
+
+volumes:
+  din-caddy-data:
+  din-caddy-config:
