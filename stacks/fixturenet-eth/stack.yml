@@ -3,12 +3,17 @@ name: fixturenet-eth
 description: "Ethereum Fixturenet"
 repos:
   - github.com/bozemanpass/fixturenet-eth-stack
+  - github.com/DIN-center/din-caddy-plugins
 containers:
   - bpi/lighthouse
   - bpi/fixturenet-eth-genesis-postmerge
   - bpi/fixturenet-eth-geth
   - bpi/fixturenet-eth-lighthouse
+  - bpi/din-caddy
 pods:
   - name: fixturenet-eth
     repository: bozemanpass/fixturenet-eth-stack
     path: fixturenet-eth
+  - name: din-caddy-stack
+    repository: bozemanpass/din-caddy-stack
+    path: din-caddy

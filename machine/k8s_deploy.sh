@@ -2,7 +2,7 @@
 
 STACK_NAME="fixturenet-eth"
 STACK_REPO="bozemanpass/${STACK_NAME}-stack"
-STACK_HTTP_TARGET="fxeth-geth-1:8545"
+STACK_HTTP_TARGET="din-caddy:8000"
 
 BPI_SCRIPT_DEBUG="${BPI_SCRIPT_DEBUG}"
 
