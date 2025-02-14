@@ -76,7 +76,7 @@ else
 fi
 
 # TODO: Remove this once env_file support is fixed for k8s
-CONFIG_FILE_ARG="--config-file ~/bpi/$(basename $STACK_REPO)/config/$STACK_NAME/$STACK_NAME.env"
+CONFIG_FILE_ARG="--config-file $HOME/bpi/$(basename $STACK_REPO)/config/$STACK_NAME/$STACK_NAME.env"
 
 $STACK_CMD \
   --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME \
@@ -94,9 +94,9 @@ $STACK_CMD \
   deploy \
     create \
      --spec-file stack.yml \
-     --deployment-dir $HOME/deployments//$STACK_NAME
+     --deployment-dir $HOME/deployments/$STACK_NAME
 
 docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
 
-$STACK_CMD deployment --dir $HOME/deployments//$STACK_NAME push-images
-$STACK_CMD deployment --dir $HOME/deployments//$STACK_NAME start
+$STACK_CMD deployment --dir $HOME/deployments/$STACK_NAME push-images
+$STACK_CMD deployment --dir $HOME/deployments/$STACK_NAME start
