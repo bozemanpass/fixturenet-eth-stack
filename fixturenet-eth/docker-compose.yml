@@ -83,6 +83,7 @@ services:
     volumes:
       - fxeth-bootnode-lighthouse-data:/data
     ports:
+      - "3000"
       - "4242"
       - "8001"
       - "9001"
