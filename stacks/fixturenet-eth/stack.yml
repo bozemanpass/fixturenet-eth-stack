@@ -14,6 +14,6 @@ pods:
   - name: fixturenet-eth
     repository: bozemanpass/fixturenet-eth-stack
     path: fixturenet-eth
-  - name: din-caddy-stack
-    repository: bozemanpass/din-caddy-stack
+  - name: din-caddy
+    repository: bozemanpass/fixturenet-eth-stack
     path: din-caddy
