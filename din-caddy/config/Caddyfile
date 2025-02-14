@@ -25,7 +25,6 @@
 		reverse_proxy {
 			lb_policy din_reverse_proxy_policy
 			transport http {
-				tls
 				keepalive 10s
 			}
 			dynamic din_reverse_proxy_policy
