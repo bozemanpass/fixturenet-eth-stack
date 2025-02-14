@@ -14,7 +14,7 @@ cleanup() {
 trap 'cleanup' SIGINT SIGTERM
 
 if [ `ls -A "$DATADIR" | wc -l`  ]; then
-  cp -rp /opt/testnet/build/cl/* /opt/testnet/build/cl/.* "$DATADIR"
+  cp -rp /opt/testnet/build/cl/* "$DATADIR"
 fi
 
 if [ "true" == "$RUN_BOOTNODE" ]; then

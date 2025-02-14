@@ -10,7 +10,7 @@ NETRESTRICT=`ip addr | grep -w inet | grep -v '127.0' | awk '{print $2}'`
 BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-/data}"
 
 if [ `ls -A "$BPI_ETH_DATADIR" | wc -l`  ]; then
-  cp -rp $HOME/ethdata/* $HOME/ethdata/.* "$BPI_ETH_DATADIR"
+  cp -rp $HOME/ethdata/* "$BPI_ETH_DATADIR"
 fi
 
 cd /opt/testnet/build/el
