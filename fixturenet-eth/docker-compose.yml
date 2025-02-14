@@ -30,7 +30,7 @@ services:
       - ../config/fixturenet-eth/fixturenet-eth.env
     image: bpi/fixturenet-eth-geth:local
     volumes:
-      - fxeth-geth-1-data:/root/ethdata
+      - fxeth-geth-1-data:/data
     healthcheck:
       test: ["CMD", "nc", "-v", "localhost", "8545"]
       interval: 30s
@@ -72,7 +72,7 @@ services:
     depends_on:
       - fxeth-bootnode-geth
     volumes:
-      - fxeth-geth-2-data:/root/ethdata
+      - fxeth-geth-2-data:/data
 
   fxeth-bootnode-lighthouse:
     restart: always
@@ -102,7 +102,7 @@ services:
       EXECUTION_ENDPOINT: http://${STACK_SVC_FXETH_GETH_1}:8551
     image: bpi/fixturenet-eth-lighthouse:local
     volumes:
-      - fxeth-lighthouse-1-data:/opt/testnet/build/cl
+      - fxeth-lighthouse-1-data:/data
     depends_on:
       fxeth-bootnode-lighthouse:
         condition: service_started
@@ -133,7 +133,7 @@ services:
       LIGHTHOUSE_GENESIS_STATE_URL: http://${STACK_SVC_FXETH_LIGHTHOUSE_1}:8001/eth/v2/debug/beacon/states/0
     image: bpi/fixturenet-eth-lighthouse:local
     volumes:
-      - fxeth-lighthouse-2-data:/opt/testnet/build/cl
+      - fxeth-lighthouse-2-data:/data
     depends_on:
       fxeth-bootnode-lighthouse:
         condition: service_started

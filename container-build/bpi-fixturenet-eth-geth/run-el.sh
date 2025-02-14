@@ -7,8 +7,11 @@ fi
 ETHERBASE=`cat /opt/testnet/build/el/accounts.csv | head -1 | cut -d',' -f2`
 NETWORK_ID=`cat /opt/testnet/el/el-config.yaml | grep 'chain_id' | awk '{ print $2 }'`
 NETRESTRICT=`ip addr | grep -w inet | grep -v '127.0' | awk '{print $2}'`
-BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-$HOME/ethdata}"
-BPI_PLUGINS_DIR="${BPI_PLUGINS_DIR:-/usr/local/lib/plugeth}"
+BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-/data}"
+
+if [ `ls -A "$BPI_ETH_DATADIR" | wc -l`  ]; then
+  cp -rp "$HOME/ethdata/*" "$HOME/ethdata/.*" "$BPI_ETH_DATADIR"
+fi
 
 cd /opt/testnet/build/el
 python3 -m http.server 9898 &

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DATADIR=${DATADIR:-/data}
+export DATADIR
+
 # See https://linuxconfig.org/how-to-propagate-a-signal-to-child-processes-from-a-bash-script
 cleanup() {
     echo "Signal received, cleaning up..."
@@ -10,8 +13,12 @@ cleanup() {
 }
 trap 'cleanup' SIGINT SIGTERM
 
+if [ `ls -A "$DATADIR" | wc -l`  ]; then
+  cp -rp "/opt/testnet/build/cl/*" "/opt/testnet/build/cl/.*" "$DATADIR"
+fi
+
 if [ "true" == "$RUN_BOOTNODE" ]; then
-    cd /opt/testnet/build/cl
+    cd $DATADIR
     python3 -m http.server 3000 &
 
 
@@ -39,7 +46,7 @@ else
 
     if [ -z "$LIGHTHOUSE_GENESIS_STATE_URL" ]; then
         # Check if beacon node data exists to avoid resetting genesis time on a restart
-        if [ -d /opt/testnet/build/cl/node_"$NODE_NUMBER"/beacon ]; then
+        if [ -d $DATADIR/node_"$NODE_NUMBER"/beacon ]; then
             echo "Skipping genesis time reset"
         else
             ./reset_genesis_time.sh
@@ -68,7 +75,7 @@ else
         done
     fi
 
-    export JWTSECRET="/opt/testnet/build/cl/jwtsecret"
+    export JWTSECRET="${DATADIR}/jwtsecret"
     echo -n "$JWT" > $JWTSECRET
 
     ./beacon_node.sh 2>&1 | tee /var/log/lighthouse_bn.log &
