@@ -8,7 +8,7 @@ services:
       RUN_BOOTNODE: "true"
     image: bpi/fixturenet-eth-geth:local
     volumes:
-      - fxeth-bootnode-geth-data:/root/ethdata
+      - fxeth-bootnode-geth-data:/data
     ports:
       - "8545"
       - "8546"
@@ -80,6 +80,8 @@ services:
     environment:
       RUN_BOOTNODE: "true"
     image: bpi/fixturenet-eth-lighthouse:local
+    volumes:
+      - fxeth-bootnode-lighthouse-data:/data
     ports:
       - "4242"
       - "8001"
@@ -144,5 +146,6 @@ volumes:
   fxeth-bootnode-geth-data:
   fxeth-geth-1-data:
   fxeth-geth-2-data:
+  fxeth-bootnode-lighthouse-data:
   fxeth-lighthouse-1-data:
   fxeth-lighthouse-2-data:
