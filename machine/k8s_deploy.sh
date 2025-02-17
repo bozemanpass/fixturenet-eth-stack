@@ -57,7 +57,7 @@ if [[ -z "$IMAGE_REGISTRY" ]]; then
   fi
 fi
 
-$STACK_CMD fetch-stack $STACK_REPO
+$STACK_CMD fetch-stack $STACK_REPO@telackey/din
 
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME setup-repositories
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME build-containers

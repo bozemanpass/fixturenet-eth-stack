@@ -2,7 +2,7 @@ version: "1.2"
 name: fixturenet-eth
 description: "Ethereum Fixturenet"
 repos:
-  - github.com/bozemanpass/fixturenet-eth-stack
+  - github.com/bozemanpass/fixturenet-eth-stack@telackey/din
   - github.com/DIN-center/din-caddy-plugins
 containers:
   - bpi/lighthouse
