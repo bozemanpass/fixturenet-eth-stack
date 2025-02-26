@@ -28,10 +28,10 @@ while (( "$#" )); do
          shift&&IMAGE_REGISTRY_PASSWORD="$1"||die
          ;;
       --http-proxy-target)
-         shift&&HTTP_PROXY_FQDN="$1"||die
+         shift&&HTTP_PROXY_TARGET_SVC="$1"||die
          ;;
       --http-proxy-fqdn)
-         shift&&HTTP_PROXY_TARGET_SVC="$1"||die
+         shift&&HTTP_PROXY_FQDN="$1"||die
          ;;
       --http-proxy-cluster-issuer)
          shift&&HTTP_PROXY_CLUSTER_ISSUER="$1"||die
