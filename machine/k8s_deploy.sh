@@ -64,7 +64,7 @@ docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_P
 $STACK_CMD fetch-stack $STACK_REPO@telackey/din
 
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME setup-repositories
-$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry registry.digitalocean.com/bozemanpass
+$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry $IMAGE_REGISTRY/bozemanpass --publish-images
 
 sudo chmod a+r /etc/rancher/k3s/k3s.yaml
 
