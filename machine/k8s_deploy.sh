@@ -59,10 +59,12 @@ if [[ -z "$IMAGE_REGISTRY" ]]; then
   fi
 fi
 
+docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
+
 $STACK_CMD fetch-stack $STACK_REPO@telackey/din
 
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME setup-repositories
-$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME build-containers
+$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry registry.digitalocean.com/bozemanpass
 
 sudo chmod a+r /etc/rancher/k3s/k3s.yaml
 
@@ -97,8 +99,6 @@ $STACK_CMD \
     create \
      --spec-file stack.yml \
      --deployment-dir $HOME/deployments/$STACK_NAME
-
-docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
 
 $STACK_CMD deployment --dir $HOME/deployments/$STACK_NAME push-images
 $STACK_CMD deployment --dir $HOME/deployments/$STACK_NAME start

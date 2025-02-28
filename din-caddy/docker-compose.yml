@@ -1,7 +1,7 @@
 
 services:
   din-caddy:
-    image: bpi/din-caddy:local
+    image: bpi/din-caddy:stack
     restart: always
     volumes:
       - din-caddy-data:/srv

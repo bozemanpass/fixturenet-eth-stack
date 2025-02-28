@@ -1,7 +1,7 @@
 FROM sigp/lcli:v5.1.2 AS lcli
-FROM bpi/fixturenet-eth-genesis-postmerge:local AS fnetgen
+FROM bpi/fixturenet-eth-genesis-postmerge:stack AS fnetgen
 
-FROM bpi/lighthouse:local
+FROM bpi/lighthouse:stack
 
 # bpi/lighthouse is based on Ubuntu
 RUN apt-get update && apt-get -y upgrade && apt-get install -y --no-install-recommends \

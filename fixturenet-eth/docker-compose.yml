@@ -6,7 +6,7 @@ services:
       - ../config/fixturenet-eth/fixturenet-eth.env
     environment:
       RUN_BOOTNODE: "true"
-    image: bpi/fixturenet-eth-geth:local
+    image: bpi/fixturenet-eth-geth:stack
     volumes:
       - fxeth-bootnode-geth-data:/data
     ports:
@@ -28,7 +28,7 @@ services:
       BPI_ALLOW_UNPROTECTED_TXS: ${BPI_ALLOW_UNPROTECTED_TXS:-false}
     env_file:
       - ../config/fixturenet-eth/fixturenet-eth.env
-    image: bpi/fixturenet-eth-geth:local
+    image: bpi/fixturenet-eth-geth:stack
     volumes:
       - fxeth-geth-1-data:/data
     healthcheck:
@@ -61,7 +61,7 @@ services:
       BPI_KEEP_RUNNING_AFTER_GETH_EXIT: "true"
     env_file:
       - ../config/fixturenet-eth/fixturenet-eth.env
-    image: bpi/fixturenet-eth-geth:local
+    image: bpi/fixturenet-eth-geth:stack
     ports:
       - "8545"
       - "8546"
@@ -79,7 +79,7 @@ services:
     hostname: fxeth-bootnode-lighthouse
     environment:
       RUN_BOOTNODE: "true"
-    image: bpi/fixturenet-eth-lighthouse:local
+    image: bpi/fixturenet-eth-lighthouse:stack
     volumes:
       - fxeth-bootnode-lighthouse-data:/data
     ports:
@@ -103,7 +103,7 @@ services:
       NODE_NUMBER: "1"
       ETH1_ENDPOINT: http://${STACK_SVC_FXETH_GETH_1}:8545
       EXECUTION_ENDPOINT: http://${STACK_SVC_FXETH_GETH_1}:8551
-    image: bpi/fixturenet-eth-lighthouse:local
+    image: bpi/fixturenet-eth-lighthouse:stack
     volumes:
       - fxeth-lighthouse-1-data:/data
     depends_on:
@@ -134,7 +134,7 @@ services:
       ETH1_ENDPOINT: http://${STACK_SVC_FXETH_GETH_2}:8545
       EXECUTION_ENDPOINT: http://${STACK_SVC_FXETH_GETH_2}:8551
       LIGHTHOUSE_GENESIS_STATE_URL: http://${STACK_SVC_FXETH_LIGHTHOUSE_1}:8001/eth/v2/debug/beacon/states/0
-    image: bpi/fixturenet-eth-lighthouse:local
+    image: bpi/fixturenet-eth-lighthouse:stack
     volumes:
       - fxeth-lighthouse-2-data:/data
     depends_on:
