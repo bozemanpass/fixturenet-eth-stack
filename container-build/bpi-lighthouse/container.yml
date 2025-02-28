@@ -1,0 +1,4 @@
+container:
+  name: bpi/lighthouse
+  ref: bozemanpass/fixturenet-eth-stack@telackey/din
+  build: ./build.sh
