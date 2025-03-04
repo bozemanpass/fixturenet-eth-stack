@@ -52,6 +52,9 @@ fi
 set -Eeo pipefail
 
 if [[ -z "$IMAGE_REGISTRY" ]]; then
+  if [[ -f "/etc/rancher/k3s/default-registry.yaml" ]]; then
+    IMAGE_REGISTRY=$(cat /etc/rancher/k3s/default-registry.yaml | grep 'default:' | head -1 | awk '{ print $2 }' | sed "s/[\"']//g")
+  fi
   if [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
     IMAGE_REGISTRY=$(cat /etc/rancher/k3s/registries.yaml | grep -A1 'configs:$' | tail -1 | awk '{ print $1 }' | cut -d':' -f1)
   fi
