@@ -54,11 +54,17 @@ set -Eeo pipefail
 if [[ -z "$IMAGE_REGISTRY" ]]; then
   if [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
     IMAGE_REGISTRY=$(cat /etc/rancher/k3s/registries.yaml | grep -A1 'configs:$' | tail -1 | awk '{ print $1 }' | cut -d':' -f1)
-    IMAGE_REGISTRY_USERNAME=$(cat /etc/rancher/k3s/registries.yaml | grep 'username:' | awk '{ print $2 }' | sed "s/[\"']//g")
-    IMAGE_REGISTRY_PASSWORD=$(cat /etc/rancher/k3s/registries.yaml | grep 'password:' | awk '{ print $2 }' | sed "s/[\"']//g")
   fi
 else
   IMAGE_REGISTRY=$(echo $IMAGE_REGISTRY | sed 's|https\?://||')
+fi
+
+if [[ -z "$IMAGE_REGISTRY_USERNAME" ]]; then
+  # TODO: Match to specific registry.
+  if [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
+    IMAGE_REGISTRY_USERNAME=$(cat /etc/rancher/k3s/registries.yaml | grep 'username:' | head -1 | awk '{ print $2 }' | sed "s/[\"']//g")
+    IMAGE_REGISTRY_PASSWORD=$(cat /etc/rancher/k3s/registries.yaml | grep 'password:' | head -1 |awk '{ print $2 }' | sed "s/[\"']//g")
+  fi
 fi
 
 docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $(echo $IMAGE_REGISTRY | cut -d'/' -f1)
