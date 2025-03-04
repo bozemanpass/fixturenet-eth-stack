@@ -79,9 +79,6 @@ else
   echo "No FQDN or target service set for HTTP proxy; skipping proxy setup."
 fi
 
-# TODO: Remove this once env_file support is fixed for k8s
-CONFIG_FILE_ARG="--config-file $HOME/bpi/$(basename $STACK_REPO)/config/$STACK_NAME/$STACK_NAME.env"
-
 $STACK_CMD \
   --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME \
   deploy \
@@ -89,7 +86,7 @@ $STACK_CMD \
     init \
       --output stack.yml \
       --kube-config /etc/rancher/k3s/k3s.yaml \
-      --image-registry $IMAGE_REGISTRY/bozemanpass ${HTTP_PROXY_ARG} ${CONFIG_FILE_ARG}
+      --image-registry $IMAGE_REGISTRY/bozemanpass ${HTTP_PROXY_ARG}
 
 mkdir $HOME/deployments
 
