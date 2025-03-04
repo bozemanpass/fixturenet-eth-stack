@@ -26,6 +26,6 @@ exec lighthouse \
   --secrets-dir $DATADIR/node_$NODE_NUMBER/secrets \
   --testnet-dir $TESTNET_DIR \
   --init-slashing-protection \
-  --beacon-nodes http://localhost:8001 \
+  --beacon-nodes http://127.0.0.1:8001 \
   --suggested-fee-recipient $SUGGESTED_FEE_RECIPIENT \
   $VC_ARGS

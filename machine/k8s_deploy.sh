@@ -2,7 +2,7 @@
 
 STACK_NAME="fixturenet-eth"
 STACK_REPO="bozemanpass/${STACK_NAME}-stack"
-STACK_HTTP_TARGET="fxeth-geth-1:8545"
+STACK_HTTP_TARGET="din-caddy:8000"
 
 BPI_SCRIPT_DEBUG="${BPI_SCRIPT_DEBUG}"
 
@@ -28,10 +28,10 @@ while (( "$#" )); do
          shift&&IMAGE_REGISTRY_PASSWORD="$1"||die
          ;;
       --http-proxy-target)
-         shift&&HTTP_PROXY_FQDN="$1"||die
+         shift&&HTTP_PROXY_TARGET_SVC="$1"||die
          ;;
       --http-proxy-fqdn)
-         shift&&HTTP_PROXY_TARGET_SVC="$1"||die
+         shift&&HTTP_PROXY_FQDN="$1"||die
          ;;
       --http-proxy-cluster-issuer)
          shift&&HTTP_PROXY_CLUSTER_ISSUER="$1"||die
@@ -49,18 +49,33 @@ if [[ -n "${BPI_SCRIPT_DEBUG}" ]]; then
   STACK_CMD="${STACK_CMD} --debug --verbose"
 fi
 
+set -Eeo pipefail
+
 if [[ -z "$IMAGE_REGISTRY" ]]; then
+  if [[ -f "/etc/rancher/k3s/default-registry.yaml" ]]; then
+    IMAGE_REGISTRY=$(cat /etc/rancher/k3s/default-registry.yaml | grep 'default:' | head -1 | awk '{ print $2 }' | sed "s/[\"']//g")
+  fi
   if [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
     IMAGE_REGISTRY=$(cat /etc/rancher/k3s/registries.yaml | grep -A1 'configs:$' | tail -1 | awk '{ print $1 }' | cut -d':' -f1)
-    IMAGE_REGISTRY_USERNAME=$(cat /etc/rancher/k3s/registries.yaml | grep 'username:' | awk '{ print $2 }' | sed "s/[\"']//g")
-    IMAGE_REGISTRY_PASSWORD=$(cat /etc/rancher/k3s/registries.yaml | grep 'password:' | awk '{ print $2 }' | sed "s/[\"']//g")
+  fi
+else
+  IMAGE_REGISTRY=$(echo $IMAGE_REGISTRY | sed 's|https\?://||')
+fi
+
+if [[ -z "$IMAGE_REGISTRY_USERNAME" ]]; then
+  # TODO: Match to specific registry.
+  if [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
+    IMAGE_REGISTRY_USERNAME=$(cat /etc/rancher/k3s/registries.yaml | grep 'username:' | head -1 | awk '{ print $2 }' | sed "s/[\"']//g")
+    IMAGE_REGISTRY_PASSWORD=$(cat /etc/rancher/k3s/registries.yaml | grep 'password:' | head -1 |awk '{ print $2 }' | sed "s/[\"']//g")
   fi
 fi
+
+docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $(echo $IMAGE_REGISTRY | cut -d'/' -f1)
 
 $STACK_CMD fetch-stack $STACK_REPO
 
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME setup-repositories
-$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME build-containers
+$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry $IMAGE_REGISTRY  --publish-images
 
 sudo chmod a+r /etc/rancher/k3s/k3s.yaml
 
@@ -75,9 +90,6 @@ else
   echo "No FQDN or target service set for HTTP proxy; skipping proxy setup."
 fi
 
-# TODO: Remove this once env_file support is fixed for k8s
-CONFIG_FILE_ARG="--config-file $HOME/bpi/$(basename $STACK_REPO)/config/$STACK_NAME/$STACK_NAME.env"
-
 $STACK_CMD \
   --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME \
   deploy \
@@ -85,7 +97,7 @@ $STACK_CMD \
     init \
       --output stack.yml \
       --kube-config /etc/rancher/k3s/k3s.yaml \
-      --image-registry $IMAGE_REGISTRY/bozemanpass ${HTTP_PROXY_ARG} ${CONFIG_FILE_ARG}
+      --image-registry $IMAGE_REGISTRY ${HTTP_PROXY_ARG}
 
 mkdir $HOME/deployments
 
@@ -95,8 +107,6 @@ $STACK_CMD \
     create \
      --spec-file stack.yml \
      --deployment-dir $HOME/deployments/$STACK_NAME
-
-docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
 
 $STACK_CMD deployment --dir $HOME/deployments/$STACK_NAME push-images
 $STACK_CMD deployment --dir $HOME/deployments/$STACK_NAME start

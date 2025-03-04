@@ -2,13 +2,27 @@ version: "1.2"
 name: fixturenet-eth
 description: "Ethereum Fixturenet"
 repos:
-  - github.com/bozemanpass/fixturenet-eth-stack
+  - bozemanpass/fixturenet-eth-stack@telackey/din
 containers:
-  - bpi/lighthouse
-  - bpi/fixturenet-eth-genesis-postmerge
-  - bpi/fixturenet-eth-geth
-  - bpi/fixturenet-eth-lighthouse
+  - name: bpi/lighthouse
+    ref: bozemanpass/fixturenet-eth-stack@telackey/din
+    path: ./container-build/bpi-lighthouse
+  - name: bpi/fixturenet-eth-genesis-postmerge
+    ref: bozemanpass/fixturenet-eth-stack@telackey/din
+    path: ./container-build/bpi-fixturenet-eth-genesis-postmerge
+  - name: bpi/fixturenet-eth-geth
+    ref: bozemanpass/fixturenet-eth-stack@telackey/din
+    path: ./container-build/bpi-fixturenet-eth-geth
+  - name: bpi/fixturenet-eth-lighthouse
+    ref: bozemanpass/fixturenet-eth-stack@telackey/din
+    path: ./container-build/bpi-fixturenet-eth-lighthouse
+  - name: bpi/din-caddy
+    ref: bozemanpass/fixturenet-eth-stack@telackey/din
+    path: ./container-build/bpi-din-caddy
 pods:
   - name: fixturenet-eth
     repository: bozemanpass/fixturenet-eth-stack
     path: fixturenet-eth
+  - name: din-caddy
+    repository: bozemanpass/fixturenet-eth-stack
+    path: din-caddy
