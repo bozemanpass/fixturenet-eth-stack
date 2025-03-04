@@ -54,13 +54,12 @@ set -Eeo pipefail
 if [[ -z "$IMAGE_REGISTRY" ]]; then
   if [[ -f "/etc/rancher/k3s/default-registry.yaml" ]]; then
     IMAGE_REGISTRY=$(cat /etc/rancher/k3s/default-registry.yaml | grep 'default:' | head -1 | awk '{ print $2 }' | sed "s/[\"']//g")
-  fi
-  if [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
+  elif [[ -f "/etc/rancher/k3s/registries.yaml" ]]; then
     IMAGE_REGISTRY=$(cat /etc/rancher/k3s/registries.yaml | grep -A1 'configs:$' | tail -1 | awk '{ print $1 }' | cut -d':' -f1)
   fi
-else
-  IMAGE_REGISTRY=$(echo $IMAGE_REGISTRY | sed 's|https\?://||')
 fi
+
+IMAGE_REGISTRY=$(echo $IMAGE_REGISTRY | sed 's|https\?://||')
 
 if [[ -z "$IMAGE_REGISTRY_USERNAME" ]]; then
   # TODO: Match to specific registry.
@@ -70,12 +69,12 @@ if [[ -z "$IMAGE_REGISTRY_USERNAME" ]]; then
   fi
 fi
 
-docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $(echo $IMAGE_REGISTRY | cut -d'/' -f1)
+docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
 
 $STACK_CMD fetch-stack $STACK_REPO
 
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME setup-repositories
-$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry $IMAGE_REGISTRY  --publish-images
+$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry $IMAGE_REGISTRY --publish-images
 
 sudo chmod a+r /etc/rancher/k3s/k3s.yaml
 
