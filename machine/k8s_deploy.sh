@@ -57,14 +57,16 @@ if [[ -z "$IMAGE_REGISTRY" ]]; then
     IMAGE_REGISTRY_USERNAME=$(cat /etc/rancher/k3s/registries.yaml | grep 'username:' | awk '{ print $2 }' | sed "s/[\"']//g")
     IMAGE_REGISTRY_PASSWORD=$(cat /etc/rancher/k3s/registries.yaml | grep 'password:' | awk '{ print $2 }' | sed "s/[\"']//g")
   fi
+else
+  IMAGE_REGISTRY=$(echo $IMAGE_REGISTRY | sed 's|https\?://||')
 fi
 
-docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $IMAGE_REGISTRY
+docker login --username "$IMAGE_REGISTRY_USERNAME" --password "$IMAGE_REGISTRY_PASSWORD" $(echo $IMAGE_REGISTRY | cut -d'/' -f1)
 
-$STACK_CMD fetch-stack $STACK_REPO@telackey/din
+$STACK_CMD fetch-stack $STACK_REPO
 
 $STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME setup-repositories
-$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry $IMAGE_REGISTRY/bozemanpass --publish-images
+$STACK_CMD --stack ~/bpi/$(basename $STACK_REPO)/stacks/$STACK_NAME prepare-containers --image-registry $IMAGE_REGISTRY  --publish-images
 
 sudo chmod a+r /etc/rancher/k3s/k3s.yaml
 
@@ -86,7 +88,7 @@ $STACK_CMD \
     init \
       --output stack.yml \
       --kube-config /etc/rancher/k3s/k3s.yaml \
-      --image-registry $IMAGE_REGISTRY/bozemanpass ${HTTP_PROXY_ARG}
+      --image-registry $IMAGE_REGISTRY ${HTTP_PROXY_ARG}
 
 mkdir $HOME/deployments
 
