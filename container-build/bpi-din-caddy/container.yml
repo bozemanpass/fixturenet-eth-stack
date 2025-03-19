@@ -1,4 +1,0 @@
-container:
-  name: bpi/din-caddy
-  ref: DIN-center/din-caddy-plugins
-  build: ./build.sh
