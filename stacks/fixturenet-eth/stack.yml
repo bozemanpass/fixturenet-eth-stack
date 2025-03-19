@@ -16,13 +16,7 @@ containers:
   - name: bpi/fixturenet-eth-lighthouse
     ref: bozemanpass/fixturenet-eth-stack
     path: ./container-build/bpi-fixturenet-eth-lighthouse
-  - name: bpi/din-caddy
-    ref: bozemanpass/fixturenet-eth-stack
-    path: ./container-build/bpi-din-caddy
 pods:
   - name: fixturenet-eth
     repository: bozemanpass/fixturenet-eth-stack
     path: fixturenet-eth
-  - name: din-caddy
-    repository: bozemanpass/fixturenet-eth-stack
-    path: din-caddy
