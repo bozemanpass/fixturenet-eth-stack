@@ -1,8 +1,5 @@
-version: "1.2"
 name: fixturenet-eth
 description: "Ethereum Fixturenet"
-repos:
-  - bozemanpass/fixturenet-eth-stack
 containers:
   - name: bpi/lighthouse
     ref: bozemanpass/fixturenet-eth-stack
