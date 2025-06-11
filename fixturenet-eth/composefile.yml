@@ -40,7 +40,7 @@ services:
     depends_on:
       - fxeth-bootnode-geth
     ports:
-      - "8545"
+      - "8545" # @stack http-proxy
       - "8546"
       - "8551"
       - "6060"
