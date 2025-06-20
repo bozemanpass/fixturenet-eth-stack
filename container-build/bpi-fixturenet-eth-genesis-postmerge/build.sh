@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build bpi/fixturenet-eth-genesis-postmerge
 
-source ${BPI_CONTAINER_BASE_DIR}/build-base.sh
+source ${STACK_CONTAINER_BASE_DIR}/build-base.sh
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build bpi/lighthouse
 
-source ${BPI_CONTAINER_BASE_DIR}/build-base.sh
+source ${STACK_CONTAINER_BASE_DIR}/build-base.sh
 
 # See: https://stackoverflow.com/a/246128/1701505
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )

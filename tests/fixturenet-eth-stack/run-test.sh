@@ -30,20 +30,20 @@ if [ ! -d "${stack_name}" ]; then
 fi
 
 # Set a non-default repo dir
-export BPI_REPO_BASE_DIR=~/stack-orchestrator-test/repo-base-dir
+export STACK_REPO_BASE_DIR=~/stack-orchestrator-test/repo-base-dir
 reported_version_string=$( $SO_COMMAND version )
 echo "SO version is: ${reported_version_string}"
-echo "Cloning repositories into: $BPI_REPO_BASE_DIR"
-rm -rf $BPI_REPO_BASE_DIR
-mkdir -p $BPI_REPO_BASE_DIR
+echo "Cloning repositories into: $STACK_REPO_BASE_DIR"
+rm -rf $STACK_REPO_BASE_DIR
+mkdir -p $STACK_REPO_BASE_DIR
 
 $SO_COMMAND --stack ${stack_name} setup-repositories
 
 echo "Building containers"
 $SO_COMMAND --stack ${stack_name} build-containers
 
-test_deployment_dir=$BPI_REPO_BASE_DIR/test-deployment-dir
-test_deployment_spec=$BPI_REPO_BASE_DIR/test-deployment-spec.yml
+test_deployment_dir=$STACK_REPO_BASE_DIR/test-deployment-dir
+test_deployment_spec=$STACK_REPO_BASE_DIR/test-deployment-spec.yml
 
 $SO_COMMAND --stack ${stack_name} deploy init --output $test_deployment_spec
 # Check the file now exists
@@ -111,6 +111,6 @@ else
 fi
 $SO_COMMAND deployment --dir $test_deployment_dir stop --delete-volumes
 log_info "Removing cloned repositories"
-rm -rf $BPI_REPO_BASE_DIR
+rm -rf $STACK_REPO_BASE_DIR
 log_info "Test finished"
 exit $test_result
