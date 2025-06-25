@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -n "$BPI_SCRIPT_DEBUG" ]; then
+if [[ -n "$STACK_SCRIPT_DEBUG" ]]; then
     set -x
 fi
 
@@ -9,7 +9,7 @@ NETWORK_ID=`cat /opt/testnet/el/el-config.yaml | grep 'chain_id' | awk '{ print 
 NETRESTRICT=`ip addr | grep -w inet | grep -v '127.0' | awk '{print $2}'`
 BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-/data}"
 
-if [ `ls -A "$BPI_ETH_DATADIR" | wc -l`  ]; then
+if [[ $(find "$BPI_ETH_DATADIR" | wc -l) -le 1 ]]; then
   cp -rp $HOME/ethdata/* "$BPI_ETH_DATADIR"
 fi
 
@@ -36,7 +36,7 @@ cleanup() {
 }
 trap 'cleanup' SIGINT SIGTERM
 
-if [ "true" == "$RUN_BOOTNODE" ]; then
+if [[ "true" == "$RUN_BOOTNODE" ]]; then
     $START_CMD \
       --datadir="${BPI_ETH_DATADIR}" \
       --nodekeyhex="${BOOTNODE_KEY}" \
@@ -97,8 +97,8 @@ fi
 
 wait $geth_pid
 
-if [ "true" == "$BPI_KEEP_RUNNING_AFTER_GETH_EXIT" ]; then
-  while [ 1 -eq 1 ]; do
+if [[ "true" == "$BPI_KEEP_RUNNING_AFTER_GETH_EXIT" ]]; then
+  while [[ 1 -eq 1 ]]; do
     sleep 60
   done
 fi

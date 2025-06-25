@@ -24,7 +24,7 @@ services:
       - SYS_PTRACE
     environment:
       BPI_REMOTE_DEBUG: ${BPI_REMOTE_DEBUG:-true}
-      BPI_SCRIPT_DEBUG: ${BPI_SCRIPT_DEBUG}
+      STACK_SCRIPT_DEBUG: ${STACK_SCRIPT_DEBUG}
       BPI_ALLOW_UNPROTECTED_TXS: ${BPI_ALLOW_UNPROTECTED_TXS:-false}
     env_file:
       - ../config/fixturenet-eth/fixturenet-eth.env
@@ -57,8 +57,6 @@ services:
       timeout: 10s
       retries: 10
       start_period: 3s
-    environment:
-      BPI_KEEP_RUNNING_AFTER_GETH_EXIT: "false"
     env_file:
       - ../config/fixturenet-eth/fixturenet-eth.env
     image: bpi/fixturenet-eth-geth:stack

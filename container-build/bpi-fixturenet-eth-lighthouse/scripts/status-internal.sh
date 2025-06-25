@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Wrapper to facilitate using status.sh inside the container
-if [ -n "$BPI_SCRIPT_DEBUG" ]; then
+if [ -n "$STACK_SCRIPT_DEBUG" ]; then
     set -x
 fi
 export LIGHTHOUSE_BASE_URL="http://fixturenet-eth-lighthouse-1:8001"

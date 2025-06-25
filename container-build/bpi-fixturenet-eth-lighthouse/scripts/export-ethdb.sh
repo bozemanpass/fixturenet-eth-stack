@@ -5,7 +5,7 @@
 
 # Usage: export-ethdb.sh [min_block_number=1000] [output_file=./ethdb.tgz]
 
-if [[ -n "$BPI_SCRIPT_DEBUG" ]]; then
+if [[ -n "$STACK_SCRIPT_DEBUG" ]]; then
     set -x
 fi
 
