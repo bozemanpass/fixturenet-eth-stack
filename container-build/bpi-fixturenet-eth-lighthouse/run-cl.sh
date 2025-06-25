@@ -1,6 +1,14 @@
 #!/bin/bash
 
-DATADIR=${DATADIR:-/data}
+if [[ -n "$STACK_SCRIPT_DEBUG" ]]; then
+    set -x
+fi
+
+BPI_LIGHTHOUSE_DATADIR=${BPI_LIGHTHOUSE_DATADIR:-/data}
+export BPI_LIGHTHOUSE_DATADIR
+
+# For any legacy scripts
+DATADIR=$BPI_LIGHTHOUSE_DATADIR
 export DATADIR
 
 # See https://linuxconfig.org/how-to-propagate-a-signal-to-child-processes-from-a-bash-script
@@ -13,12 +21,13 @@ cleanup() {
 }
 trap 'cleanup' SIGINT SIGTERM
 
-if [ `ls -A "$DATADIR" | wc -l`  ]; then
-  cp -rp /opt/testnet/build/cl/* "$DATADIR"
+if [[ $(find "$BPI_LIGHTHOUSE_DATADIR" | wc -l) -le 1 ]]; then
+  echo "Copying initial data..."
+  cp -rp /opt/testnet/build/cl/* "$BPI_LIGHTHOUSE_DATADIR"
 fi
 
-if [ "true" == "$RUN_BOOTNODE" ]; then
-    cd $DATADIR
+if [[ "true" == "$RUN_BOOTNODE" ]]; then
+    cd $BPI_LIGHTHOUSE_DATADIR
     python3 -m http.server 3000 &
 
 
@@ -28,7 +37,7 @@ if [ "true" == "$RUN_BOOTNODE" ]; then
 
     wait $bootnode_pid
 else
-    while [ 1 -eq 1 ]; do
+    while [[ 1 -eq 1 ]]; do
       echo "Waiting on geth ..."
       sleep 5
       result=`wget --no-check-certificate --quiet \
@@ -44,15 +53,15 @@ else
 
     cd /opt/testnet/cl
 
-    if [ -z "$LIGHTHOUSE_GENESIS_STATE_URL" ]; then
+    if [[ -z "$LIGHTHOUSE_GENESIS_STATE_URL" ]]; then
         # Check if beacon node data exists to avoid resetting genesis time on a restart
-        if [ -d $DATADIR/node_"$NODE_NUMBER"/beacon ]; then
+        if [ -d $BPI_LIGHTHOUSE_DATADIR/node_"$NODE_NUMBER"/beacon ]; then
             echo "Skipping genesis time reset"
         else
             ./reset_genesis_time.sh
         fi
     else
-        while [ 1 -eq 1 ]; do
+        while [[ 1 -eq 1 ]]; do
             echo "Waiting on Genesis time ..."
             sleep 5
             result=`wget --no-check-certificate --quiet -O - --timeout=0 $LIGHTHOUSE_GENESIS_STATE_URL | jq -r '.data.genesis_time'`
@@ -63,8 +72,8 @@ else
         done
     fi
 
-    if [ ! -z "$ENR_URL" ]; then
-        while [ 1 -eq 1 ]; do
+    if [[ ! -z "$ENR_URL" ]]; then
+        while [[ 1 -eq 1 ]]; do
             echo "Waiting on ENR for boot node..."
             sleep 5
             result=`wget --no-check-certificate --quiet -O - --timeout=0 $ENR_URL`
@@ -75,7 +84,7 @@ else
         done
     fi
 
-    export JWTSECRET="${DATADIR}/jwtsecret"
+    export JWTSECRET="${BPI_LIGHTHOUSE_DATADIR}/jwtsecret"
     echo -n "$JWT" > $JWTSECRET
 
     ./beacon_node.sh 2>&1 | tee /var/log/lighthouse_bn.log &

@@ -10,6 +10,7 @@ NETRESTRICT=`ip addr | grep -w inet | grep -v '127.0' | awk '{print $2}'`
 BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-/data}"
 
 if [[ $(find "$BPI_ETH_DATADIR" | wc -l) -le 1 ]]; then
+  echo "Copying initial data..."
   cp -rp $HOME/ethdata/* "$BPI_ETH_DATADIR"
 fi
 
