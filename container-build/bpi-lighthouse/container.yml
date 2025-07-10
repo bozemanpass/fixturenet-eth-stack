@@ -1,4 +1,0 @@
-container:
-  name: bpi/lighthouse
-  ref: bozemanpass/fixturenet-eth-stack
-  build: ./build.sh
