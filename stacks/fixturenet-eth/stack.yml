@@ -1,13 +1,13 @@
 name: fixturenet-eth
 description: "Ethereum Fixturenet"
 containers:
-  - name: bpi/lighthouse
+  - name: bozemanpass/lighthouse
     path: ./container-build/bpi-lighthouse
-  - name: bpi/fixturenet-eth-genesis-postmerge
+  - name: bozemanpass/fixturenet-eth-genesis-postmerge
     path: ./container-build/bpi-fixturenet-eth-genesis-postmerge
-  - name: bpi/fixturenet-eth-geth
+  - name: bozemanpass/fixturenet-eth-geth
     path: ./container-build/bpi-fixturenet-eth-geth
-  - name: bpi/fixturenet-eth-lighthouse
+  - name: bozemanpass/fixturenet-eth-lighthouse
     path: ./container-build/bpi-fixturenet-eth-lighthouse
 pods:
   - name: fixturenet-eth

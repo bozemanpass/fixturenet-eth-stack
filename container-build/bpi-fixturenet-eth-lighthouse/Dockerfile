@@ -1,9 +1,9 @@
 FROM sigp/lcli:v5.1.2 AS lcli
-FROM bpi/fixturenet-eth-genesis-postmerge:stack AS fnetgen
+FROM bozemanpass/fixturenet-eth-genesis-postmerge:stack AS fnetgen
 
-FROM bpi/lighthouse:stack
+FROM bozemanpass/lighthouse:stack
 
-# bpi/lighthouse is based on Ubuntu
+# bozemanpass/lighthouse is based on Ubuntu
 RUN apt-get update && apt-get -y upgrade && apt-get install -y --no-install-recommends \
   libssl-dev ca-certificates \
   curl socat iproute2 telnet wget jq \
