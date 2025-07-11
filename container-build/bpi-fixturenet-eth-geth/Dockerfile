@@ -1,4 +1,4 @@
-FROM bpi/fixturenet-eth-genesis-postmerge:stack as fnetgen
+FROM bozemanpass/fixturenet-eth-genesis-postmerge:stack as fnetgen
 FROM ethereum/client-go:v1.14.8 as geth
 
 # Using the same golang image as used to build geth: https://github.com/cerc-io/go-ethereum/blob/HEAD/Dockerfile
