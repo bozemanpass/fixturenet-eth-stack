@@ -1,4 +1,0 @@
-container:
-  name: bpi/fixturenet-eth-geth
-  ref: bozemanpass/fixturenet-eth-stack
-  build: ./build.sh
