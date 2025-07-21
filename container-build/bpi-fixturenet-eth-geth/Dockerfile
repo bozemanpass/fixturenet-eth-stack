@@ -16,8 +16,8 @@ COPY --from=geth /usr/local/bin/geth /usr/local/bin/
 COPY --from=fnetgen /opt/genesis /opt/testnet
 
 # Initialize the geth db with our config
-RUN geth --datadir ~/ethdata --state.scheme hash \
+RUN geth --datadir /opt/testnet/build/el/ethdata --state.scheme hash \
     init /opt/testnet/build/el/geth.json && \
-    rm -f ~/ethdata/geth/nodekey
+    rm -f /opt/testnet/build/el/ethdata/geth/nodekey
 
 ENTRYPOINT ["/opt/testnet/run.sh"]

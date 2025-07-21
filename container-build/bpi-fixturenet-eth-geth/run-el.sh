@@ -11,7 +11,7 @@ BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-/data}"
 
 if [[ $(find "$BPI_ETH_DATADIR" | wc -l) -le 1 ]]; then
   echo "Copying initial data..."
-  cp -rp $HOME/ethdata/* "$BPI_ETH_DATADIR"
+  cp -rp /opt/testnet/build/el/ethdata/* "$BPI_ETH_DATADIR"
 fi
 
 cd /opt/testnet/build/el
@@ -52,7 +52,7 @@ else
     cd /opt/testnet/accounts
     ./import_keys.sh
 
-    echo -n "$JWT" > /opt/testnet/build/el/jwtsecret
+    echo -n "$JWT" > "$BPI_BPI_ETH_DATADIR/jwtsecret"
 
     OTHER_OPTS=""
     if [ "$BPI_ALLOW_UNPROTECTED_TXS" == "true" ]; then
@@ -71,7 +71,7 @@ else
       --http.corsdomain="*" \
       --authrpc.addr="0.0.0.0" \
       --authrpc.vhosts="*" \
-      --authrpc.jwtsecret="/opt/testnet/build/el/jwtsecret" \
+      --authrpc.jwtsecret="$BPI_BPI_ETH_DATADIR/jwtsecret" \
       --ws \
       --ws.addr="0.0.0.0" \
       --ws.origins="*" \
