@@ -1,5 +1,6 @@
 services:
   fxeth-bootnode-geth:
+    user: ${STACK_HOST_UID}:${STACK_HOST_GID}
     restart: always
     hostname: fxeth-bootnode-geth
     env_file:
@@ -18,6 +19,7 @@ services:
       - "30303"
 
   fxeth-geth-1:
+    user: ${STACK_HOST_UID}:${STACK_HOST_GID}
     restart: always
     hostname: fxeth-geth-1
     cap_add:
@@ -49,6 +51,7 @@ services:
       - "40000"
 
   fxeth-geth-2:
+    user: ${STACK_HOST_UID}:${STACK_HOST_GID}
     restart: always
     hostname: fxeth-geth-2
     healthcheck:
@@ -73,6 +76,7 @@ services:
       - fxeth-geth-2-data:/data
 
   fxeth-bootnode-lighthouse:
+    user: ${STACK_HOST_UID}:${STACK_HOST_GID}
     restart: always
     hostname: fxeth-bootnode-lighthouse
     environment:
@@ -87,6 +91,7 @@ services:
       - "9001"
 
   fxeth-lighthouse-1:
+    user: ${STACK_HOST_UID}:${STACK_HOST_GID}
     restart: always
     hostname: fxeth-lighthouse-1
     healthcheck:
@@ -114,6 +119,7 @@ services:
       - "9001"
 
   fxeth-lighthouse-2:
+    user: ${STACK_HOST_UID}:${STACK_HOST_GID}
     restart: always
     hostname: fxeth-lighthouse-2
     healthcheck:
