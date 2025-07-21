@@ -11,7 +11,8 @@ BPI_ETH_DATADIR="${BPI_ETH_DATADIR:-/data}"
 
 if [[ $(find "$BPI_ETH_DATADIR" | wc -l) -le 1 ]]; then
   echo "Copying initial data..."
-  cp -rp /opt/testnet/build/el/ethdata/* "$BPI_ETH_DATADIR"
+  cp -r /opt/testnet/build/el/ethdata/* "$BPI_ETH_DATADIR"
+  chmod -R o-rwx "$BPI_ETH_DATADIR"
 fi
 
 cd /opt/testnet/build/el

@@ -20,4 +20,6 @@ RUN geth --datadir /opt/testnet/build/el/ethdata --state.scheme hash \
     init /opt/testnet/build/el/geth.json && \
     rm -f /opt/testnet/build/el/ethdata/geth/nodekey
 
+RUN chmod -R a+rX /opt/testnet/build/el
+
 ENTRYPOINT ["/opt/testnet/run.sh"]
