@@ -27,4 +27,6 @@ RUN mkdir -p /scripts
 COPY scripts/status-internal.sh /scripts
 COPY scripts/status.sh /scripts
 
+RUN chmod -R a+rX /opt/testnet/build/cl
+
 ENTRYPOINT ["/opt/testnet/run.sh"]

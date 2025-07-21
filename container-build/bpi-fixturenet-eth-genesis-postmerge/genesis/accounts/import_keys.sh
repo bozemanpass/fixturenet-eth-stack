@@ -7,11 +7,11 @@ for line in `cat ../build/el/accounts.csv`; do
   ADDRESS="`echo "$line" | cut -d',' -f2`"
   PRIVATE_KEY="`echo "$line" | cut -d',' -f3`"
 
-  echo "$ACCOUNT_PASSWORD" > .pw.$$
-  echo "$PRIVATE_KEY" | sed 's/0x//' > .key.$$
+  echo "$ACCOUNT_PASSWORD" > /tmp/.pw.$$
+  echo "$PRIVATE_KEY" | sed 's/0x//' > /tmp/.key.$$
 
   echo ""
   echo "$ADDRESS"
-  geth account import --datadir=~/ethdata --password .pw.$$ .key.$$
-  rm -f .pw.$$ .key.$$
+  geth account import --datadir=~/ethdata --password /tmp/.pw.$$ /tmp/.key.$$
+  rm -f /tmp/.pw.$$ /tmp/.key.$$
 done

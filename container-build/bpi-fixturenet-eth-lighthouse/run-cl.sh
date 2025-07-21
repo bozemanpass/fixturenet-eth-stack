@@ -6,6 +6,7 @@ fi
 
 BPI_LIGHTHOUSE_DATADIR=${BPI_LIGHTHOUSE_DATADIR:-/data}
 export BPI_LIGHTHOUSE_DATADIR
+cd "$BPI_LIGHTHOUSE_DATADIR"
 
 # For any legacy scripts
 DATADIR=$BPI_LIGHTHOUSE_DATADIR
@@ -23,7 +24,8 @@ trap 'cleanup' SIGINT SIGTERM
 
 if [[ $(find "$BPI_LIGHTHOUSE_DATADIR" | wc -l) -le 1 ]]; then
   echo "Copying initial data..."
-  cp -rp /opt/testnet/build/cl/* "$BPI_LIGHTHOUSE_DATADIR"
+  cp -r /opt/testnet/build/cl/* "$BPI_LIGHTHOUSE_DATADIR"
+  chmod -R o-rwx "$BPI_LIGHTHOUSE_DATADIR"
 fi
 
 if [[ "true" == "$RUN_BOOTNODE" ]]; then
@@ -32,7 +34,7 @@ if [[ "true" == "$RUN_BOOTNODE" ]]; then
 
 
     cd /opt/testnet/cl
-    ./bootnode.sh 2>&1 | tee /var/log/lighthouse_bootnode.log &
+    ./bootnode.sh &
     bootnode_pid=$!
 
     wait $bootnode_pid
@@ -87,9 +89,9 @@ else
     export JWTSECRET="${BPI_LIGHTHOUSE_DATADIR}/jwtsecret"
     echo -n "$JWT" > $JWTSECRET
 
-    ./beacon_node.sh 2>&1 | tee /var/log/lighthouse_bn.log &
+    ./beacon_node.sh &
     beacon_pid=$!
-    ./validator_client.sh 2>&1 | tee /var/log/lighthouse_vc.log &
+    ./validator_client.sh &
     validator_pid=$!
 
     wait $beacon_pid $validator_pid
