@@ -32,7 +32,7 @@ if [[ "true" == "$RUN_BOOTNODE" ]]; then
 
 
     cd /opt/testnet/cl
-    ./bootnode.sh 2>&1 | tee /var/log/lighthouse_bootnode.log &
+    ./bootnode.sh &
     bootnode_pid=$!
 
     wait $bootnode_pid
