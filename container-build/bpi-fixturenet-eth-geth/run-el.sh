@@ -52,7 +52,7 @@ else
     cd /opt/testnet/accounts
     ./import_keys.sh
 
-    echo -n "$JWT" > "$BPI_BPI_ETH_DATADIR/jwtsecret"
+    echo -n "$JWT" > "${BPI_ETH_DATADIR}/jwtsecret"
 
     OTHER_OPTS=""
     if [ "$BPI_ALLOW_UNPROTECTED_TXS" == "true" ]; then
@@ -71,7 +71,7 @@ else
       --http.corsdomain="*" \
       --authrpc.addr="0.0.0.0" \
       --authrpc.vhosts="*" \
-      --authrpc.jwtsecret="$BPI_BPI_ETH_DATADIR/jwtsecret" \
+      --authrpc.jwtsecret="${BPI_ETH_DATADIR}/jwtsecret" \
       --ws \
       --ws.addr="0.0.0.0" \
       --ws.origins="*" \
